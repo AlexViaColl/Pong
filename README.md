@@ -1,6 +1,6 @@
 # Pong
 
-* WORK IN PROGRESS*
+**WORK IN PROGRESS**
 
 An implementation of the classical game Pong in C.
 
