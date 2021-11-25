@@ -8,3 +8,5 @@ An implementation of the classical game Pong in C.
 $ build.sh
 $ ./pong
 ```
+
+![Screenshot](./screenshot.png)
