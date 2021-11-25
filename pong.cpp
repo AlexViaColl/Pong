@@ -47,7 +47,7 @@ void set_projection_matrix(f32 width, f32 height) {
 		0.0f,          0.0f,           0.0f, 1.0f
 	};
 	glLoadTransposeMatrixf(proj_mat);
-	
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -56,14 +56,14 @@ void draw_quad(f32 x, f32 y, f32 width, f32 height, RGBA color = 0) {
 	set_projection_matrix(800.0f, 600.0f);
 
 	glBegin(GL_QUADS);
-		f32 r = ((color >> 24) & 0xFF) / 255.0f;
-		f32 g = ((color >> 16) & 0xFF) / 255.0f;
-		f32 b = ((color >>  8) & 0xFF) / 255.0f;
-		glColor3f(r, g, b);
-		glVertex2f(x, y);
-		glVertex2f(x + width, y);
-		glVertex2f(x + width, y + height);
-		glVertex2f(x, y + height);
+	f32 r = ((color >> 24) & 0xFF) / 255.0f;
+	f32 g = ((color >> 16) & 0xFF) / 255.0f;
+	f32 b = ((color >>  8) & 0xFF) / 255.0f;
+	glColor3f(r, g, b);
+	glVertex2f(x, y);
+	glVertex2f(x + width, y);
+	glVertex2f(x + width, y + height);
+	glVertex2f(x, y + height);
 	glEnd();
 }
 
@@ -71,9 +71,9 @@ void draw_line(f32 xstart, f32 ystart, f32 xend, f32 yend) {
 	set_projection_matrix(800.0f, 600.0f);
 
 	glBegin(GL_LINES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex2f(xstart, ystart);
-		glVertex2f(xend, yend);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex2f(xstart, ystart);
+	glVertex2f(xend, yend);
 	glEnd();
 }
 
@@ -203,7 +203,7 @@ void mixer_init(Mixer *mixer) {
 void mixer_init2(Mixer *mixer) {
 	mixer->sample_rate = 44100;
 	mixer->channel_count = 1;
-	
+
 	// mixer->bytes_per_sample = sizeof(s16);
 	// mixer->samples_per_frame = mixer->channel_count;
 	// mixer->frames_per_period = mixer->sample_rate / 10; // latency of 0.1s ???
@@ -239,15 +239,15 @@ void mixer_init2(Mixer *mixer) {
 		snd_ctl_card_info_alloca(&card_info);
 		snd_ctl_card_info(ctl, card_info);
 		printf("card info:\n  number: %d\n  id: %s\n  driver: %s\n  name: %s\n  longname: %s\n  mixername: %s\n  components: %s\n",
-			snd_ctl_card_info_get_card(card_info),
-			snd_ctl_card_info_get_id(card_info),
-			snd_ctl_card_info_get_driver(card_info),
-			snd_ctl_card_info_get_name(card_info),
-			snd_ctl_card_info_get_longname(card_info),
-			snd_ctl_card_info_get_mixername(card_info),
-			snd_ctl_card_info_get_components(card_info)
-		);
-		
+				snd_ctl_card_info_get_card(card_info),
+				snd_ctl_card_info_get_id(card_info),
+				snd_ctl_card_info_get_driver(card_info),
+				snd_ctl_card_info_get_name(card_info),
+				snd_ctl_card_info_get_longname(card_info),
+				snd_ctl_card_info_get_mixername(card_info),
+				snd_ctl_card_info_get_components(card_info)
+			  );
+
 		snd_ctl_elem_list_t *element_list;
 		snd_ctl_elem_list_alloca(&element_list);
 		err = snd_ctl_elem_list(ctl, element_list);
@@ -260,7 +260,7 @@ void mixer_init2(Mixer *mixer) {
 			snd_ctl_elem_id_t *element_id;
 			snd_ctl_elem_id_alloca(&element_id);
 			snd_ctl_elem_list_get_id(element_list, i, element_id);
-			
+
 			snd_ctl_elem_info_t *element_info;
 			snd_ctl_elem_info_alloca(&element_info);
 			snd_ctl_elem_info_set_id(element_info, element_id);
@@ -277,16 +277,16 @@ void mixer_init2(Mixer *mixer) {
 
 			if (element_type == SND_CTL_ELEM_TYPE_ENUMERATED) {
 				printf("    selected item: %s (%d)\n",
-					snd_ctl_elem_info_get_item_name(element_info),
-					snd_ctl_elem_info_get_items(element_info)
-				);
+						snd_ctl_elem_info_get_item_name(element_info),
+						snd_ctl_elem_info_get_items(element_info)
+					  );
 			} else if (element_type == SND_CTL_ELEM_TYPE_INTEGER) {
 				printf("    value: %d, min: %d, max: %d, step: %d\n",
-					snd_ctl_elem_value_get_integer(element_value, i),
-					snd_ctl_elem_info_get_min(element_info),
-					snd_ctl_elem_info_get_max(element_info),
-					snd_ctl_elem_info_get_step(element_info)
-				);
+						snd_ctl_elem_value_get_integer(element_value, i),
+						snd_ctl_elem_info_get_min(element_info),
+						snd_ctl_elem_info_get_max(element_info),
+						snd_ctl_elem_info_get_step(element_info)
+					  );
 			} else if (element_type == SND_CTL_ELEM_TYPE_BOOLEAN) {
 				printf("    value: %s\n", snd_ctl_elem_value_get_boolean(element_value, i) ? "true" : "false");
 			} else if (element_type == SND_CTL_ELEM_TYPE_BYTES) {
@@ -312,32 +312,32 @@ void mixer_init2(Mixer *mixer) {
 		exit(1);
 	}
 	printf("pcm:\n  name: %s\n  type: %s\n  stream: %s\n  poll descriptors count: %d\n  state: %s\n\n",
-		snd_pcm_name(pcm),
-		snd_pcm_type_name(snd_pcm_type(pcm)),
-		snd_pcm_stream_name(snd_pcm_stream(pcm)),
-		snd_pcm_poll_descriptors_count(pcm),
-		snd_pcm_state_name(snd_pcm_state(pcm))
-	);
+			snd_pcm_name(pcm),
+			snd_pcm_type_name(snd_pcm_type(pcm)),
+			snd_pcm_stream_name(snd_pcm_stream(pcm)),
+			snd_pcm_poll_descriptors_count(pcm),
+			snd_pcm_state_name(snd_pcm_state(pcm))
+		  );
 
 	snd_pcm_info_t *pcm_info;
 	snd_pcm_info_alloca(&pcm_info);
 	snd_pcm_info(mixer->device, pcm_info);
 	printf("pcm_info:\n  device: %d\n  subdevice: %d\n  stream: %s\n  card: %d\n  id: %s\n"
-		"  name: %s\n  subdevice name: %s\n  class: %d\n  subclass: %d\n  subdevices count: %d\n"
-		"  subdevices available: %d\n  synchronization id: %d\n\n",
-		snd_pcm_info_get_device(pcm_info),
-		snd_pcm_info_get_subdevice(pcm_info),
-		snd_pcm_stream_name(snd_pcm_info_get_stream(pcm_info)),
-		snd_pcm_info_get_card(pcm_info),
-		snd_pcm_info_get_id(pcm_info),
-		snd_pcm_info_get_name(pcm_info),
-		snd_pcm_info_get_subdevice_name(pcm_info),
-		snd_pcm_info_get_class(pcm_info),
-		snd_pcm_info_get_subclass(pcm_info),
-		snd_pcm_info_get_subdevices_count(pcm_info),
-		snd_pcm_info_get_subdevices_avail(pcm_info),
-		snd_pcm_info_get_sync(pcm_info)
-	);
+			"  name: %s\n  subdevice name: %s\n  class: %d\n  subclass: %d\n  subdevices count: %d\n"
+			"  subdevices available: %d\n  synchronization id: %d\n\n",
+			snd_pcm_info_get_device(pcm_info),
+			snd_pcm_info_get_subdevice(pcm_info),
+			snd_pcm_stream_name(snd_pcm_info_get_stream(pcm_info)),
+			snd_pcm_info_get_card(pcm_info),
+			snd_pcm_info_get_id(pcm_info),
+			snd_pcm_info_get_name(pcm_info),
+			snd_pcm_info_get_subdevice_name(pcm_info),
+			snd_pcm_info_get_class(pcm_info),
+			snd_pcm_info_get_subclass(pcm_info),
+			snd_pcm_info_get_subdevices_count(pcm_info),
+			snd_pcm_info_get_subdevices_avail(pcm_info),
+			snd_pcm_info_get_sync(pcm_info)
+		  );
 
 	snd_pcm_hw_params_t *hw_params;
 	snd_pcm_hw_params_alloca(&hw_params);
@@ -357,7 +357,7 @@ void mixer_init2(Mixer *mixer) {
 	if (err < 0) {fprintf(stderr, "snd_pcm_hw_params_set_periods error: %s\n", snd_strerror(err)); exit(1);}
 	// snd_pcm_hw_params_set_buffer_time
 	// snd_pcm_hw_params_set_buffer_size
-	
+
 	int dir = 0;
 	u32 period_time = 100000; // period time in us = 0.1 seconds
 	err = snd_pcm_hw_params_set_period_time_near(mixer->device, hw_params, &period_time, &dir);
@@ -402,14 +402,14 @@ void mixer_init2(Mixer *mixer) {
 	printf("  min transfer align in samples: %d\n", min_transfer_align_in_samples);
 	printf("  pause supported: %s\n", pause_supported ? "true" : "false");
 	printf("\n");
-	
+
 	// write parameters to device
 	err = snd_pcm_hw_params(mixer->device, hw_params);
 	printf("state after set hw_params: %s\n", snd_pcm_state_name(snd_pcm_state(pcm)));
 
 	// snd_pcm_sw_params_t *sw_params;
 	// snd_pcm_sw_params_alloca(&sw_params);
-	
+
 	// snd_pcm_sw_params_set_tstamp_mode
 	// snd_pcm_sw_params_set_tstamp_type
 	// snd_pcm_sw_params_set_avail_min
@@ -418,7 +418,7 @@ void mixer_init2(Mixer *mixer) {
 	// snd_pcm_sw_params_set_stop_threshold
 	// snd_pcm_sw_params_set_silence_threshold
 	// snd_pcm_sw_params_set_silence_size
-	
+
 	// snd_pcm_sw_params(mixer->device, sw_params);
 
 	err = snd_pcm_prepare(mixer->device);
@@ -470,14 +470,14 @@ int main() {
 	}
 
 	Window window = XCreateSimpleWindow(
-		display,
-		XDefaultRootWindow(display),
-		0, 0,
-		WINDOW_WIDTH, WINDOW_HEIGHT,
-		0,
-		0x00000000,
-		0x00000000 // 0x00FF00FF
-	);
+			display,
+			XDefaultRootWindow(display),
+			0, 0,
+			WINDOW_WIDTH, WINDOW_HEIGHT,
+			0,
+			0x00000000,
+			0x00000000 // 0x00FF00FF
+			);
 	if (!window) {
 		fprintf(stderr, "Failed to create window\n");
 		exit(1);
@@ -506,10 +506,10 @@ int main() {
 	glXMakeCurrent(display, window, gl_context);
 
 	glViewport(0, 0, win_attribs.width, win_attribs.height); 
-	
+
 	RGBA paddle_color = 0xFFFFFFFF;
 	RGBA ball_color   = 0xFFFFFFFF;
-	
+
 	f32 paddle_width   = WINDOW_WIDTH / 20.0f;
 	f32 paddle_height  = paddle_width * 4; 
 	f32 paddle_left_x  = 0.0f;
@@ -546,23 +546,23 @@ int main() {
 			XNextEvent(display, &event);
 			switch (event.type) {
 				case KeyPress: {
-					KeySym keysym = XLookupKeysym(&event.xkey, 0);
-					if (keysym == XK_Escape) {
-						printf("Exiting...\n");
-						quit = true;
-					}
-					if (keysym == XK_Up) 	{up_pressed = true;}
-					if (keysym == XK_Down)	{down_pressed = true;}
-					if (keysym == XK_w) 	{w_pressed = true;}
-					if (keysym == XK_s) 	{s_pressed = true;}
-				} break;
+								   KeySym keysym = XLookupKeysym(&event.xkey, 0);
+								   if (keysym == XK_Escape) {
+									   printf("Exiting...\n");
+									   quit = true;
+								   }
+								   if (keysym == XK_Up) 	{up_pressed = true;}
+								   if (keysym == XK_Down)	{down_pressed = true;}
+								   if (keysym == XK_w) 	{w_pressed = true;}
+								   if (keysym == XK_s) 	{s_pressed = true;}
+							   } break;
 				case KeyRelease: {
-					KeySym keysym = XLookupKeysym(&event.xkey, 0);
-					if (keysym == XK_Up) 	{up_pressed = false;}
-					if (keysym == XK_Down) 	{down_pressed = false;}
-					if (keysym == XK_w) 	{w_pressed = false;}
-					if (keysym == XK_s) 	{s_pressed = false;}
-				} break;
+									 KeySym keysym = XLookupKeysym(&event.xkey, 0);
+									 if (keysym == XK_Up) 	{up_pressed = false;}
+									 if (keysym == XK_Down) 	{down_pressed = false;}
+									 if (keysym == XK_w) 	{w_pressed = false;}
+									 if (keysym == XK_s) 	{s_pressed = false;}
+								 } break;
 			}
 		}
 
@@ -579,30 +579,30 @@ int main() {
 
 		switch (state) {
 			case TUTORIAL: {
-				draw_string("PRESS UP OR DOWN TO MOVE", WINDOW_WIDTH * 0.12, 20);
-				if (up_pressed || down_pressed || w_pressed || s_pressed) {
-					state = PLAY;
-					score_left = 0;
-					score_right = 0;
-				}
-			} break;
+							   draw_string("PRESS UP OR DOWN TO MOVE", WINDOW_WIDTH * 0.12, 20);
+							   if (up_pressed || down_pressed || w_pressed || s_pressed) {
+								   state = PLAY;
+								   score_left = 0;
+								   score_right = 0;
+							   }
+						   } break;
 			case PLAY: {
-				if (score_left >= 10 || score_right >= 10) {
-					state = GAMEOVER;
-				}
-			} break;
+						   if (score_left >= 10 || score_right >= 10) {
+							   state = GAMEOVER;
+						   }
+					   } break;
 			case GAMEOVER: {
-				draw_string("GAME OVER", WINDOW_WIDTH * 0.2, 20, 10);
-				draw_string("PRESS UP OR DOWN TO MOVE", WINDOW_WIDTH * 0.12, 100);
-				if (up_pressed || down_pressed) {
-					state = PLAY;
-					score_left = 0;
-					score_right = 0;
-				}
-			} break;
+							   draw_string("GAME OVER", WINDOW_WIDTH * 0.2, 20, 10);
+							   draw_string("PRESS UP OR DOWN TO MOVE", WINDOW_WIDTH * 0.12, 100);
+							   if (up_pressed || down_pressed) {
+								   state = PLAY;
+								   score_left = 0;
+								   score_right = 0;
+							   }
+						   } break;
 			default:
-				fprintf(stderr, "Invalid game state: %d\n", state);
-				exit(1);
+						   fprintf(stderr, "Invalid game state: %d\n", state);
+						   exit(1);
 		}
 
 
@@ -620,11 +620,11 @@ int main() {
 			if (s_pressed) {
 				paddle_left_y += paddle_speed*dt;
 			}
-	
+
 			// Update Ball
 			ball_x = ball_x + ball_vx*dt;
 			ball_y = ball_y + ball_vy*dt;
-	
+
 			if (ball_x < 0.0f) {
 				ball_x = ball_start_x;
 				score_right += 1;
@@ -636,23 +636,23 @@ int main() {
 			}
 
 			if (ball_x < (paddle_left_x + paddle_width) &&
-				(ball_y + ball_height) > paddle_left_x &&
-				ball_y < (paddle_left_y + paddle_height) &&
-				ball_vx < 0.0f)
+					(ball_y + ball_height) > paddle_left_x &&
+					ball_y < (paddle_left_y + paddle_height) &&
+					ball_vx < 0.0f)
 			{
 				play_sound(&mixer, 400.0f, 100);
 				ball_vx = -ball_vx;
 			}
 			if ((ball_x + ball_width) > paddle_right_x &&
-				(ball_y + ball_height) > paddle_right_y &&
-				ball_y < (paddle_right_y + paddle_height) &&
-				ball_vx > 0.0f)
+					(ball_y + ball_height) > paddle_right_y &&
+					ball_y < (paddle_right_y + paddle_height) &&
+					ball_vx > 0.0f)
 			{
 				play_sound(&mixer, 200.0f, 100);
 				ball_vx = -ball_vx;
 			}
-			
-	
+
+
 			// if ((ball_x + ball_width) > WINDOW_WIDTH) {ball_vx = -ball_vx;}
 			if (ball_y < 0.0f || (ball_y + ball_height) > WINDOW_HEIGHT) {ball_vy = -ball_vy;}
 
@@ -677,7 +677,7 @@ int main() {
 					down_pressed = false;
 				}
 			}
-			
+
 			// Net
 			f32 net_width = 20.0f;
 			int net_segment_count = 10;
